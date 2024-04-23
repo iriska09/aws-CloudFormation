@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Simple EC2 instance creation with a custom security group"
+Resources:
+  MyInstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: "vpc-0334e582a87f84baf"
+      GroupName: "homew-sg"
+      GroupDescription: "homew-sg"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: "ami-09b90e09742640522"
+      InstanceType: "t2.micro"
+      KeyName: "mymackey"
+      SubnetId: "subnet-0b098b67db39f05ac"
+      SecurityGroupIds:
+        - !GetAtt MyInstanceSecurityGroup.GroupId
