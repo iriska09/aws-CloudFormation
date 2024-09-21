@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  SHSCrossAccountRoleAssume:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: SHSCrossAccountRoleAssume
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "ec2.amazonaws.com"  
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: ShsAccountPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sts:AssumeRole"
+                  - "route53:*"
+                  - "ec2:*"
+                  - "vpc:*"
+                  - "s3:*"
+                  - "s3:GetObject"  
+                  - "s3:PutObject"
+                  - "s3:GetBucketAcl"
+                  - "s3:PutBucketPolicy"
+                  - "s3:GetBucketPolicy"
+                  - "s3:ListBucket"
+                  - "cloudformation:*"
+                  - "codebuild:*"
+                  - "codedeploy:*"
+                  - "iam:*"
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                  - "logs:CreateLogDelivery"
+                  - "ec2:CreateFlowLogs"
+                  - "ec2:DescribeFlowLogs"
+                  - "ec2:DeleteFlowLogs"
+                  - "s3:PutBucketOwnershipControls"
+                  - "s3:PutObjectAcl"
+                  - "s3:GetBucketVersioning"
+                  - "s3:GetBucketOwnershipControls"
+                Resource: "*"
+      Tags:
+        - Key: account
+          Value: shs
+        - Key: project
+          Value: project9
+        - Key: owner
+          Value: ykudaibergen
+        - Key: team
+          Value: cat
+        - Key: purpose
+          Value: iamCrossAccountAssumeRole
+
+
+
+  JenkinsInstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      InstanceProfileName: JenkinsInstanceProfileshs
+      Roles:
+        - Ref: SHSCrossAccountRoleAssume

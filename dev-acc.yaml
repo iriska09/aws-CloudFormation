@@ -1,0 +1,36 @@
+Resources:
+  VPCFlowLogsRoleDev:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: VPCFlowLogsRoleDev
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: vpc-flow-logs.amazonaws.com
+            Action: sts:AssumeRole
+
+  AssumeVPCFlowLogsRolePolicyDev:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: AssumeVPCFlowLogsRole
+      Roles:
+        - Ref: VPCFlowLogsRoleDev
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Resource: arn:aws:iam::047719638063:role/VPCFlowLogsRoleDev
+      Tags:
+        - Key: account
+          Value: dev
+        - Key: project
+          Value: project9
+        - Key: owner
+          Value: ykudaibergen
+        - Key: team
+          Value: cat
+        - Key: purpose
+          Value: VPCFlowLogsToAssumeRole

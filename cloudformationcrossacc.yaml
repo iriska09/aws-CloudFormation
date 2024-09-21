@@ -1,0 +1,39 @@
+#This role grants AssumeRole permissions with resource creation permissions (like ec2, s3, iam, and cloudformation) 
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  CloudFormationExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: CloudFormationExecutionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: "arn:aws:iam::545009838470:role/SHSCrossAccountRoleAssume"  
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: CloudFormationExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ec2:*'        
+                  - 's3:*'
+                  - 'iam:*'
+                  - 'route53:*'
+                  - 'cloudformation:*'
+                  - 'vpc:*'
+                Resource: '*'
+      Tags:
+        - Key: account
+          Value: log
+        - Key: project
+          Value: project9
+        - Key: owner
+          Value: ykudaibergen
+        - Key: team
+          Value: cat
+        - Key: purpose
+          Value: iamCrossAccountforCloudFormationExecution

@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  TerraformExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: TerraformExecutionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: "arn:aws:iam::545009838470:role/SHSCrossAccountRoleAssume"
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: TerraformExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:*"                   
+                  - "ec2:*"                  
+                  - "iam:*"                 
+                  - "cloudformation:*"      
+                  - "logs:*"                
+                  - "vpc:*"                  
+                  - "route53:*"             
+                  - "codebuild:*"          
+                  - "codedeploy:*"         
+                  - "lambda:*" 
+                  - "s3:PutBucketOwnershipControls"
+                  - "s3:GetBucketOwnershipControls"
+                  - "s3:PutObject"
+                  - "s3:PutObjectAcl"
+                  - "s3:GetBucketVersioning"
+                  - "s3:ListBucket"
+                Resource: '*'
+      Tags:
+        - Key: account
+          Value: prod
+        - Key: project
+          Value: project9
+        - Key: owner
+          Value: ykudaibergen
+        - Key: team
+          Value: cat
+        - Key: purpose
+          Value: iamCrossAccountforTerraformexecution

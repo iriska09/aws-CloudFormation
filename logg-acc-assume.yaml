@@ -1,0 +1,44 @@
+# log-archive-account-roles.yaml
+
+Resources:
+  VPCFlowLogsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: VPCFlowLogsRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - arn:aws:iam::047719638063:role/VPCFlowLogsRoleDev
+                - arn:aws:iam::615299757391:role/VPCFlowLogsRoleProd
+                - arn:aws:iam::545009838470:role/VPCFlowLogsRoleShs # Corrected ARN
+            Action: sts:AssumeRole
+
+  VPCFlowLogsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: VPCFlowLogsPolicy
+      Roles:
+        - Ref: VPCFlowLogsRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:PutObjectAcl
+            Resource: "*"
+
+      Tags:
+        - Key: account
+          Value: logg
+        - Key: project
+          Value: project9
+        - Key: owner
+          Value: ykudaibergen
+        - Key: team
+          Value: cat
+        - Key: purpose
+          Value: VPCFlowLogsToAssumeRole
