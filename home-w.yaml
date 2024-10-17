@@ -27,4 +27,4 @@ Resources:
       KeyName: "mymackey"
       SubnetId: "subnet-0b098b67db39f05ac"
       SecurityGroupIds:
-    ?
+        - Ref MyInstanceSecurityGroup 
